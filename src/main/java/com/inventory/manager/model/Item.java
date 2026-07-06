@@ -1,24 +1,34 @@
 package com.inventory.manager.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name= "inventory_items")
 
 public class Item {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank (message = "Item name cannot be empty")
     @Column(nullable = false)
     private String name;
 
+    @NotNull(message = "Quantity is required")
+    @Min(value = 0, message = "Quantity cannot be less than zero")
     @Column(nullable = false)
     private Integer quantity;
 
+    @NotNull(message = "Price is required")
+    @Min(value = 0, message = "Price cannot be negative")
     @Column(nullable = false)
     private BigDecimal price;
+
 
     // Empty Constructor Required By Spring Data JPA
     public Item() {}
@@ -28,7 +38,7 @@ public class Item {
     public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
-    public void setId(String name) { this.name = name; }
+    public void setName(String name) { this.name = name; }
 
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
