@@ -20,8 +20,9 @@ public class ItemController {
 
     // 1. GET REQUEST: View all items on the shelves
     @GetMapping
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
+    public List<Item> getAllItems(@RequestParam(required = false) String search) {
+        if (search != null) { return itemRepository.findByNameContainingIgnoreCase(search); }
+        else { return itemRepository.findAll(); }
     }
 
     // 2. POST REQUEST: Add a new Item to the shelves
@@ -47,6 +48,8 @@ public class ItemController {
         existingItem.setName(updatedDetails.getName());
         existingItem.setQuantity(updatedDetails.getQuantity());
         existingItem.setPrice(updatedDetails.getPrice());
+        existingItem.setCost(updatedDetails.getCost());
+        existingItem.setCategory(updatedDetails.getCategory());
 
         // Save the updated item back to the database
         return itemRepository.save(existingItem);

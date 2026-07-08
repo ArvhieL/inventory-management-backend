@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name= "inventory_items")
@@ -29,6 +30,15 @@ public class Item {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @NotNull(message = "Cost is required")
+    @Min(value = 0, message = "Cost cannot be negative")
+    @Column(nullable = false)
+    private BigDecimal cost;
+
+    @NotBlank (message = "Item category cannot be empty")
+    @Column(nullable = false)
+    private String category;
+
 
     // Empty Constructor Required By Spring Data JPA
     public Item() {}
@@ -45,4 +55,16 @@ public class Item {
 
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
+
+    public BigDecimal getCost() { return cost; }
+    public void setCost(BigDecimal cost) { this.cost = cost; }
+
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+
+    @Transient
+    public BigDecimal getTotalPrice() { return price.multiply(BigDecimal.valueOf(quantity)); }
+
+    @Transient
+    public  BigDecimal getTotalCost() { return cost.multiply(BigDecimal.valueOf(quantity)); }
 }
