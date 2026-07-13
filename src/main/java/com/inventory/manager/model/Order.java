@@ -23,10 +23,12 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
-    // This links the receipt to all its physical items sold.
-    // cascade = CascadeType.ALL means if we save the Order, it saves the History too
+    // cascade = CascadeType.ALL - if we save the Order, it saves the History too
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderHistory> history = new ArrayList<>();
+    private List<OrderHistory> orderHistory = new ArrayList<>();
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<LaborHistory> laborHistory = new ArrayList<>();
 
     // Empty Constructor Required By Spring Data JPA
     public Order() {}
@@ -41,6 +43,9 @@ public class Order {
     public BigDecimal getTotalAmount() { return totalAmount; }
     public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
 
-    public List<OrderHistory> getHistory() { return history; }
-    public void setHistory(List<OrderHistory> history) { this.history = history; }
+    public List<OrderHistory> getOrderHistory() { return orderHistory; }
+    public void setOrderHistory(List<OrderHistory> orderHistory) { this.orderHistory = orderHistory; }
+
+    public List<LaborHistory> getLaborHistory() { return laborHistory; }
+    public void setLaborHistory(List<LaborHistory> laborHistory) { this.laborHistory = laborHistory; }
 }
